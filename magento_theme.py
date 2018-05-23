@@ -34,20 +34,22 @@ if not os.path.exists(theme_folder_path):
     for themefolder in theme_folders:        
         os.makedirs(os.path.join(theme_folder_path,themefolder))    
 
-    # Download theme.xml file from Magento latest version URL
-    theme_xml = 'https://raw.githubusercontent.com/magento/magento2/2.2-develop/app/design/frontend/Magento/blank/theme.xml'
-    composer_json =  'https://raw.githubusercontent.com/magento/magento2/2.2-develop/app/design/frontend/Magento/blank/composer.json'
-    registration_php = 'https://raw.githubusercontent.com/magento/magento2/2.2-develop/app/design/frontend/Magento/blank/registration.php'
-    view_xml = 'https://raw.githubusercontent.com/magento/magento2/2.2-develop/app/design/frontend/Magento/blank/etc/view.xml'
+    
+    version_input = raw_input('Magento Version:')
 
+    # Download default theme file from Magento latest version URL
+    theme_xml = os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input +'-develop/app/design/frontend/Magento/blank/theme.xml')
+    composer_json =  os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input + '-develop/app/design/frontend/Magento/blank/composer.json' )
+    registration_php = os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input + '-develop/app/design/frontend/Magento/blank/registration.php' )
+    view_xml = os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input + '-develop/app/design/frontend/Magento/blank/etc/view.xml' )          
 
     # theme.xml file download
     filedata = urllib2.urlopen(theme_xml)  
     datatowrite = filedata.read()
     with open(os.path.join(theme_folder_path, 'theme.xml') ,'wb') as f:  
-        f.write(datatowrite)
+        f.write(datatowrite) 
 
-     # composer.json file download
+    # composer.json file download
     filedata = urllib2.urlopen(composer_json)  
     datatowrite = filedata.read()
     with open(os.path.join(theme_folder_path, 'composer.json') ,'wb') as f:  
