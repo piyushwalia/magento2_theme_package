@@ -64,8 +64,6 @@ if not os.path.exists(theme_folder_path):
     for themefolder in THEME_FOLDERS:
         os.makedirs(os.path.join(theme_folder_path, themefolder))
 
-  
-def download_theme_files():
     # Magento version
     print('')
     print('Downloading available magento version:')
