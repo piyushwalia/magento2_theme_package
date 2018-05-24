@@ -1,7 +1,6 @@
 
 import sys, os, urllib2
 
-
 # magento directory path which will is already present, if not, will create dir
 magento_dir_path = 'app/design/frontend/'
 # If you are using python3, change raw_input to input
@@ -34,35 +33,17 @@ if not os.path.exists(theme_folder_path):
     for themefolder in theme_folders:        
         os.makedirs(os.path.join(theme_folder_path,themefolder))    
 
-    
+    # Magento version
     version_input = raw_input('Magento Version:')
-
     # Download default theme file from Magento latest version URL
-    theme_xml = os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input +'-develop/app/design/frontend/Magento/blank/theme.xml')
-    composer_json =  os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input + '-develop/app/design/frontend/Magento/blank/composer.json' )
-    registration_php = os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input + '-develop/app/design/frontend/Magento/blank/registration.php' )
-    view_xml = os.path.join('https://raw.githubusercontent.com/magento/magento2/'+ version_input + '-develop/app/design/frontend/Magento/blank/etc/view.xml' )          
-
-    # theme.xml file download
-    filedata = urllib2.urlopen(theme_xml)  
-    datatowrite = filedata.read()
-    with open(os.path.join(theme_folder_path, 'theme.xml') ,'wb') as f:  
-        f.write(datatowrite) 
-
-    # composer.json file download
-    filedata = urllib2.urlopen(composer_json)  
-    datatowrite = filedata.read()
-    with open(os.path.join(theme_folder_path, 'composer.json') ,'wb') as f:  
-        f.write(datatowrite)   
-
-    # registratoin.php file download
-    filedata = urllib2.urlopen(composer_json)  
-    datatowrite = filedata.read()
-    with open(os.path.join(theme_folder_path, 'registration.php') ,'wb') as f:  
-        f.write(datatowrite)                 
-
-      # view.xml in etc folder file download
-    filedata = urllib2.urlopen(view_xml)  
-    datatowrite = filedata.read()
-    with open(os.path.join(theme_folder_path,'etc', 'view.xml') ,'wb') as f:  
-        f.write(datatowrite)     
+    downloadable_files = [ 'theme.xml', 'composer.json',  'registration.php', 'etc/view.xml']
+    for url_folders in downloadable_files: 
+        magento_file_url = 'https://raw.githubusercontent.com/magento/magento2/'+ version_input +'-develop/app/design/frontend/Magento/blank/'
+        theme_xml = os.path.join(magento_file_url + url_folders)
+        print "Downloading....", url_folders    
+        filedata = urllib2.urlopen(theme_xml)  
+        datatowrite = filedata.read()
+        with open(os.path.join(theme_folder_path, url_folders) ,'wb') as f:  
+            f.write(datatowrite) 
+        
+    
