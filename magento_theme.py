@@ -80,14 +80,19 @@ if not os.path.exists(theme_folder_path):
         version_input = raw_input('Enter Magento Version(use full name):')
     except NameError:
         version_input = input('Enter Magento Version(use full name):')
-    for url_folders in DOWNLOADABLE_FILES:
-        magento_file_url = REMOTE_URL_PART1 + version_input + REMOTE_URL_PART2
-        theme_xml = os.path.join(magento_file_url + url_folders)
-        print("Downloading...." + url_folders)
-        fileData = urllib2.urlopen(theme_xml)
-        dataToWrite = fileData.read()
-        with open(os.path.join(theme_folder_path, url_folders), 'wb') as f:
-            f.write(dataToWrite)
-            print("Download complete")
 
-    print("Theme created successfully.")
+    try:
+        for url_folders in DOWNLOADABLE_FILES:
+            magento_file_url = REMOTE_URL_PART1 + version_input + REMOTE_URL_PART2
+            theme_xml = os.path.join(magento_file_url + url_folders)
+            print("Downloading...." + url_folders)
+            fileData = urllib2.urlopen(theme_xml)
+            dataToWrite = fileData.read()
+            with open(os.path.join(theme_folder_path, url_folders), 'wb') as f:
+                f.write(dataToWrite)
+                print("Download complete")
+
+        print("Theme created successfully.")
+    except Exception:
+        print("Unable to download the file: " + theme_xml)
+        print("Please check the you have entered:  " + version_input)
