@@ -6,7 +6,7 @@ Help:
   https://github.com/piyushwalia/m2_automate
 """
 
-import os
+import os, json
 
 # urllib2 bug fix
 # see https://stackoverflow.com/questions/6594620/python-3-2-unable-to-import-urllib2-importerror-no-module-named-urllib2#6594775
@@ -18,7 +18,7 @@ except ImportError:
 # magento_file_url = 'https://raw.githubusercontent.com/magento/magento2/' + version_input + '-develop/app/design/frontend/Magento/blank/'
 
 REMOTE_URL_PART1 = 'https://raw.githubusercontent.com/magento/magento2/'
-REMOTE_URL_PART2 = '-develop/app/design/frontend/Magento/blank/'
+REMOTE_URL_PART2 = '/app/design/frontend/Magento/blank/'
 
 # this will create Inner folders of theme
 WEB_FOLDERS = ['css', 'Images']
@@ -30,7 +30,7 @@ DOWNLOADABLE_FILES = ['theme.xml', 'composer.json', 'registration.php', 'etc/vie
 # magento directory path which will is already present, if not, will create dir
 MAGENTO_DIR_PATH = 'app/design/frontend/'
 
-
+GITHUB_MAGENTO_URL = "https://api.github.com/repos/magento/magento2/branches"
 # If you are using python3, change raw_input to input
 # Input from console where user will enter Vendor name
 try:
@@ -65,10 +65,25 @@ if not os.path.exists(theme_folder_path):
         os.makedirs(os.path.join(theme_folder_path, themefolder))
 
     # Magento version
+    print('')
+    print('Downloading available magento version:')
+    r = urllib2.urlopen(GITHUB_MAGENTO_URL)
+    data = json.load(r)
+    versions = []
+    for d in data:
+        n = d['name'].replace('u', '')
+        try:
+            int(n[0])
+            versions.append(n)
+        except ValueError:
+            pass
+    print(versions)
+    print('')
+
     try:
-        version_input = raw_input('Magento Version:')
+        version_input = raw_input('Enter Magento Version(use full name):')
     except NameError:
-        version_input = input('Magento Version:')
+        version_input = input('Enter Magento Version(use full name):')
     for url_folders in DOWNLOADABLE_FILES:
         magento_file_url = REMOTE_URL_PART1 + version_input + REMOTE_URL_PART2
         theme_xml = os.path.join(magento_file_url + url_folders)
