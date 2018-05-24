@@ -30,7 +30,7 @@ DOWNLOADABLE_FILES = ['theme.xml', 'composer.json', 'registration.php', 'etc/vie
 # magento directory path which will is already present, if not, will create dir
 MAGENTO_DIR_PATH = 'app/design/frontend/'
 
-GITHUB_MAGENTO_URL = "https://api.github.com/repos/magento/magento2/branches"
+GITHUB_MAGENTO_URL = "https://api.github.com/repos/magento/magento2/tags"
 # If you are using python3, change raw_input to input
 # Input from console where user will enter Vendor name
 try:
@@ -72,11 +72,7 @@ if not os.path.exists(theme_folder_path):
     versions = []
     for d in data:
         n = d['name'].replace('u', '')
-        try:
-            int(n[0])
-            versions.append(n)
-        except ValueError:
-            pass
+        versions.append(n)
     print(versions)
     print('')
 
