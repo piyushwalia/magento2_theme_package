@@ -64,35 +64,35 @@ if not os.path.exists(theme_folder_path):
     for themefolder in THEME_FOLDERS:
         os.makedirs(os.path.join(theme_folder_path, themefolder))
 
-    # Magento version
-    print('')
-    print('Downloading available magento version:')
-    r = urllib2.urlopen(GITHUB_MAGENTO_URL)
-    data = json.load(r)
-    versions = []
-    for d in data:
-        n = d['name'].replace('u', '')
-        versions.append(n)
-    print(versions)
-    print('')
+# Magento version
+print('')
+print('Downloading available magento version:')
+r = urllib2.urlopen(GITHUB_MAGENTO_URL)
+data = json.load(r)
+versions = []
+for d in data:
+    n = d['name'].replace('u', '')
+    versions.append(n)
+print(versions)
+print('')
 
-    try:
-        version_input = raw_input('Enter Magento Version(use full name):')
-    except NameError:
-        version_input = input('Enter Magento Version(use full name):')
+try:
+    version_input = raw_input('Enter Magento Version(use full name):')
+except NameError:
+    version_input = input('Enter Magento Version(use full name):')
 
-    try:
-        for url_folders in DOWNLOADABLE_FILES:
-            magento_file_url = REMOTE_URL_PART1 + version_input + REMOTE_URL_PART2
-            theme_xml = os.path.join(magento_file_url + url_folders)
-            print("Downloading...." + url_folders)
-            fileData = urllib2.urlopen(theme_xml)
-            dataToWrite = fileData.read()
-            with open(os.path.join(theme_folder_path, url_folders), 'wb') as f:
-                f.write(dataToWrite)
-                print("Download complete")
+try:
+    for url_folders in DOWNLOADABLE_FILES:
+        magento_file_url = REMOTE_URL_PART1 + version_input + REMOTE_URL_PART2
+        theme_xml = os.path.join(magento_file_url + url_folders)
+        print("Downloading...." + url_folders)
+        fileData = urllib2.urlopen(theme_xml)
+        dataToWrite = fileData.read()
+        with open(os.path.join(theme_folder_path, url_folders), 'wb') as f:
+            f.write(dataToWrite)
+            print("Download complete")
 
-        print("Theme created successfully.")
-    except Exception:
-        print("Unable to download the file: " + theme_xml)
-        print("Please check the you have entered:  " + version_input)
+    print("Theme created successfully.")
+except Exception:
+    print("Unable to download the file: " + theme_xml)
+    print("Please check the you have entered:  " + version_input)
