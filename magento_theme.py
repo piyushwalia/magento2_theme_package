@@ -45,5 +45,5 @@ if not os.path.exists(theme_folder_path):
         datatowrite = filedata.read()
         with open(os.path.join(theme_folder_path, url_folders) ,'wb') as f:  
             f.write(datatowrite) 
-        
-    
+
+    print "Theme created successfully."
