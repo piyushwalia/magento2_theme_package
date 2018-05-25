@@ -1,5 +1,6 @@
 
-import sys, os, urllib2
+import sys, os, urllib2, fileinput
+from shutil import copyfile
 
 # magento directory path which will is already present, if not, will create dir
 magento_dir_path = 'app/design/frontend/'
@@ -55,3 +56,19 @@ def download_theme_files():
                 break                
 if __name__== "__main__":
     download_theme_files()
+
+# Opnen file and replace the required content in it
+
+filein = os.path.join( theme_folder_path, 'theme.xml')
+theme_title = os.path.join(vendor_name + ' ' + theme_name)
+print filein
+f = open(filein,'r')
+filedata = f.read()
+f.close()
+
+newdata = filedata.replace("Magento Blank",theme_title)
+
+f = open(filein,'w')
+f.write(newdata)
+f.close()
+
