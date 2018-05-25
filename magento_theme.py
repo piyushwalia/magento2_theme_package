@@ -77,9 +77,9 @@ print(versions)
 print('')
 
 try:
-    version_input = raw_input('Enter Magento Version(use full name):')
+    version_input = raw_input('Enter Magento Version(use full version):')
 except NameError:
-    version_input = input('Enter Magento Version(use full name):')
+    version_input = input('Enter Magento Version(use full version):')
 
 try:
     for url_folders in DOWNLOADABLE_FILES:
