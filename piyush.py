@@ -1,6 +1,6 @@
 
-import sys, os, urllib2, fileinput
-from shutil import copyfile
+import sys, os, urllib2, fileinput, shutil
+
 
 # magento directory path which will is already present, if not, will create dir
 magento_dir_path = 'app/design/frontend/'
@@ -35,40 +35,48 @@ if not os.path.exists(theme_folder_path):
     for themefolder in theme_folders:        
         os.makedirs(os.path.join(theme_folder_path,themefolder))    
 
+
+# copy file from Magento theme directory to our theme
+core_files = [ 'theme.xml', 'composer.json',  'registration.php']
+magento_root_initial = 'Magento/vendor/magento/theme-frontend-blank/'
+theme_etc_file = 'etc/view.xml'
+shutil.copy2(os.path.join(magento_root_initial + theme_etc_file), os.path.join(theme_folder_path , theme_etc_file)) 
+for copy_files in core_files:         
+    shutil.copy2(os.path.join(magento_root_initial + copy_files), theme_folder_path) 
   
-def download_theme_files():
-    # Magento version
-    version_input = raw_input('Magento Version:')
-    # Download default theme file from Magento latest version URL
-    downloadable_files = [ 'theme.xml', 'composer.json',  'registration.php', 'etc/view.xml']
-    for url_folders in downloadable_files:         
-        magento_file_url = 'https://raw.githubusercontent.com/magento/magento2/'+ version_input +'-develop/app/design/frontend/Magento/blank/'                
-        try:
-            theme_xml = os.path.join(magento_file_url + url_folders)
-            print "Downloading...........", url_folders    
-            filedata = urllib2.urlopen(theme_xml)          
-            datatowrite = filedata.read()
-            with open(os.path.join(theme_folder_path, url_folders) ,'wb') as f:  
-                f.write(datatowrite)
-        except urllib2.HTTPError as err:
-            if err.code == 404:
-                print "Please enter Valid Magento Version" 
-                break                
-if __name__== "__main__":
-    download_theme_files()
+
 
 # Opnen file and replace the required content in it
-
-filein = os.path.join( theme_folder_path, 'theme.xml')
-theme_title = os.path.join(vendor_name + ' ' + theme_name)
-print filein
-f = open(filein,'r')
+# open theme file
+theme_xml = os.path.join( theme_folder_path, 'theme.xml')
+# theme name 
+theme_title = os.path.join("<title>" + vendor_name + ' ' + theme_name + "</title>\n")
+blank_theme = "<parent>Magento/blank</parent>"
+theme_name_parent = theme_title + blank_theme
+f = open(theme_xml,'r')
 filedata = f.read()
 f.close()
-
-newdata = filedata.replace("Magento Blank",theme_title)
-
-f = open(filein,'w')
-f.write(newdata)
+theme_xml_data = filedata.replace("<title>Magento Blank</title>",theme_name_parent)
+f = open(theme_xml,'w')
+f.write(theme_xml_data)
 f.close()
+
+
+
+reg_php = os.path.join( theme_folder_path, 'registration.php')
+reg_title = os.path.join('frontend/' + vendor_name + '/' + theme_name)
+
+print reg_title
+f = open(reg_php,'r')
+filedata = f.read()
+f.close()
+reg_php_data = filedata.replace("frontend/Magento/blank", reg_title)
+f = open(reg_php,'w')
+f.write(reg_php_data)
+f.close()
+
+     
+
+print("Theme created successfully.")
+
 
