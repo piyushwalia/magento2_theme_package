@@ -1,2 +1,2 @@
 # m2_automate
-Script to automate the Process of theme creation, styling and other tasks
+Script to generate theme package with necessary files needed for development
